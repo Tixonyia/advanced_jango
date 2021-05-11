@@ -3,6 +3,27 @@ const getListUrl = '/catalogData.json';
 const getBasketUrl = '/getBasket.json';
 const addToBasketUrl = '/addToBasket.json';
 const removeFromBasketUrl = '/deleteFromBasket.json';
+// 1
+let xhr;
+function makeGETRequest(url) {
+  return new Promise((resolve, reject) => {
+
+    if (window.XMLHttpRequest) {
+      xhr = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+      xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        resolve(xhr.responseText);
+      }
+    }
+    xhr.open('GET', url, true);
+    xhr.send();
+
+    return Promise;
+  })
+}
 
 let goods = [
   { title: 'Shirt', price: 150 },
@@ -38,13 +59,7 @@ class Product {
     this.price = price;
 
   }
-  addToBasket() {
 
-  }
-
-  deleteFromBasket(title) {
-
-  }
 
   render() {
     return `
@@ -62,6 +77,48 @@ class Goods {
   constructor(goods) {
     this.goods = goods;
   }
+  render(container) {
+    let html = '';
+    for (let i in this.goods) {
+      const goodsItem = this.goods[i];
+      html += goodsItem.render();
+    }
+    container.innerHTML = html;
+  }
+
+  transformData(list) {
+    return list.map((item) => ({
+      title: item.product_name,
+      price: item.price,
+      id: item.product_name
+    }));
+  }
+
+  render(container) {
+    let html = '';
+    for (let i in this.goods) {
+      const goodsItem = this.goods[i];
+      html += goodsItem.render();
+    }
+    container.innerHTML = html;
+  }
+
+  fetchData() {
+    makeGETRequest(`${baseUrl}${getListUrl}`)
+      .then((goods) => {
+        goods = this.transformData(JSON.parse(xhr.response))
+        this.goods = goods
+        console.log(goods)
+        let items = goods.map((product) => new Product(product.title, product.price))
+
+        let goodsList = new Goods(items);
+        let listElement = document.querySelector('.goods-list')
+        goodsList.render(listElement);
+      })
+      .catch(err => { console.log(goods), console.log('err') })
+  }
+
+
 
   render(container) {
     let html = '';
@@ -83,10 +140,10 @@ class Goods {
   }
 
 
-  addQuantty(title) {
+  addInbasket(title) {
 
   }
-  reduceQuantty(title) {
+  reduceWithoutQuantty(title) {
 
   }
 }
@@ -102,13 +159,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   let isBasketOpen = false;
   //const r = await fetch(`${baseUrl}${getListUrl}`);
   //goods = await r.json();
-  const items = goods.map((product) => new Product(product.title, product.price))
+  let items = goods.map((product) => new Product(product.title, product.price))
 
-  const goodsList = new Goods(items);
-  const listElement = document.querySelector('.goods-list');
+  let goodsList = new Goods(items);
+  let listElement = document.querySelector('.goods-list');
   //insertCode(listElement, renderList(goods));
 
+
   goodsList.render(listElement);
+  goodsList.fetchData();
+
+
   goodsList.rendeTotalSumm();
 
 
