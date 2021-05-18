@@ -2,7 +2,6 @@
 document.addEventListener("DOMContentLoaded", function (event) {
 
     document.getElementById("myBtn").addEventListener("click", function () {
-        regexp = new RegExp("\B'|'\B", 'g')
         const reader = new FileReader();
         reader.addEventListener('load', function () {
             document.getElementById('file').innerText = this.result.replace(/^'"'$/g, '$1"$2');
