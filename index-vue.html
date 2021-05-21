@@ -10,24 +10,9 @@
 
 <body>
   <div id='app'>
-    <header>
-      <input class="header-input" placeholder="Найти товар" v-model='query' type="text" />
-      <button class="cart-button" type="button">Корзина</button>
-    </header>
-    <div class="basket">
-      <div class="basket-list">
-      </div>
-    </div>
-    <main>
-      <div class="goods-list">
-        <div v-for="item in filteredGoods" class="goods-list_item">
-          <img />
-          <span class="heading">{{item.title}}</span>
-          <span class="price">{{item.price}}</span>
-          <a class="button" href='#'>{{basketName}}</a>
-        </div>
-      </div>
-    </main>
+    <search v-bind:goods="goodsList" :should="should" ref=""> </search>
+    <input type="button" value="Загрузить товары с сервера" @click="handleLoadClick">
+    <goods-list v-bind:goods="goodsList" :should="should" ref=""></goods-list>
   </div>
 
 </body>
