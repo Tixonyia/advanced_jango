@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>eShop</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="./script-vue.js"></script>
+  <link href="./styles-vue.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id='app'>
+    <search v-bind:goods="goodsList" :should="should" ref=""> </search>
+    <input type="button" value="Загрузить товары с сервера" @click="handleLoadClick">
+    <goods-list v-bind:goods="goodsList" :should="should" ref=""></goods-list>
+  </div>
+
+</body>
+
+</html>
