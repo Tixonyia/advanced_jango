@@ -11,6 +11,7 @@ let goods = [
   { title: 'Shoes', price: 250 },
 ];
 
+const basketName = 'Добавить в корзину';
 const renderList = (items) => {
   return items.map(item => {
     const isAdded = true;
@@ -30,6 +31,68 @@ const insertCode = (container, html) => {
   container.innerHTML = html;
 };
 
+
+class Product {
+  constructor(title, price) {
+    this.title = title;
+    this.price = price;
+
+  }
+  addToBasket() {
+
+  }
+
+  deleteFromBasket(title) {
+
+  }
+
+  render() {
+    return `
+      <div class="goods-list_item">
+          <img />
+          <span class="heading">${this.title}</span>
+          <span class="price">${this.price}</span>
+          <a class="button" href="#">${basketName}</a>
+      </div>
+      `;
+  }
+}
+
+class Goods {
+  constructor(goods) {
+    this.goods = goods;
+  }
+
+  render(container) {
+    let html = '';
+    for (let i in this.goods) {
+      const goodsItem = this.goods[i];
+      html += goodsItem.render();
+    }
+    container.innerHTML = html;
+  }
+
+  rendeTotalSumm() {
+    let totalPrice = document.querySelector('.goods-list_total');
+    let summPrice = 0;
+    this.goods.forEach(good => {
+      summPrice += good.price
+    });
+    console.log(summPrice)
+    totalPrice.innerText = `Итого:  ${summPrice}`;
+  }
+
+
+  addQuantty(title) {
+
+  }
+  reduceQuantty(title) {
+
+  }
+}
+
+
+
 (async () => {
 
 })()
@@ -37,11 +100,20 @@ const insertCode = (container, html) => {
 
 document.addEventListener('DOMContentLoaded', async () => {
   let isBasketOpen = false;
-  const r = await fetch(`${baseUrl}${getListUrl}`);
-  goods = await r.json();
-  console.log(goods);
+  //const r = await fetch(`${baseUrl}${getListUrl}`);
+  //goods = await r.json();
+  const items = goods.map((product) => new Product(product.title, product.price))
+
+  const goodsList = new Goods(items);
   const listElement = document.querySelector('.goods-list');
-  insertCode(listElement, renderList(goods));
+  //insertCode(listElement, renderList(goods));
+
+  goodsList.render(listElement);
+  goodsList.rendeTotalSumm();
+
+
+
+
 
   const cartBth = document.querySelector('.cart-button');
   const cart = document.querySelector('.basket');
