@@ -32,7 +32,7 @@ main {
 
 .goods-list_item {
     display: flex;
-    margin-left: auto;
+    flex-direction: column;
     width: 200px;
     height: 350px;
     margin-right: 20px;
@@ -44,11 +44,24 @@ main {
 .goods-list_item img {
     display: block;
     width: 100%;
+    height: 200px;
 
 }
 
 .goods-list_item .heading {
+    color: black;
+    text-align: center;
+    padding: 5px;
+}
 
+.goods-list_item .price {
+    color: rgb(12, 8, 8);
+    text-align: right;
+}
+
+.goods-list_total {
+    color: rgb(12, 8, 8);
+    text-align: right;
 }
 
 .goods-list_item .button {
